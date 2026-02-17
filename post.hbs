@@ -214,8 +214,11 @@
    {{! injects code via a Custom HTML tool }}
 
 </main>
-<aside>
-   {{> sidebar}}
+<aside class="toc-sidebar" data-toc-sidebar hidden>
+   <div class="toc-sidebar__inner card">
+      <h2>{{ translate 'partials.toc.title' }}</h2>
+      <nav class="toc-sidebar__nav" data-toc-nav aria-label="{{ translate 'partials.toc.ariaLabel' }}"></nav>
+   </div>
 </aside>
 
 {{> footer}}

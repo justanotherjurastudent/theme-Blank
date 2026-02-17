@@ -1,30 +1,58 @@
-<header>
-
-   <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Zum Dark Mode wechseln">
-      <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀️</span>
-      <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" hidden>🌙</span>
-   </button>
-
-   {{! @website global variable used to display a logo and website name  }}
-   {{! check if a Website logo exists, if not, dispaly the website name }}
-   <a id="logo" href="{{@website.url}}">
-      {{#if @website.logo}}
-         <img src="{{@website.logo}}" alt="{{@website.name}}">
-      {{else}}
-         {{@website.name}}
+<nav class="app-sidebar" aria-label="Primary">
+   <div class="app-sidebar__brand">
+      <a id="logo" href="{{@website.url}}">
+         {{#if @website.logo}}
+            <img src="{{@website.logo}}" alt="{{@website.name}}">
+         {{/if}}
+         <span>{{@website.name}}</span>
+      </a>
+      {{#if @website.description}}
+         <p class="app-sidebar__description">{{@website.description}}</p>
       {{/if}}
-   </a>
-   {{! /check if a Website logo exists, if not, dispaly the website name }}
-   {{! /@website global variable used to display a logo and website name  }}
+      <button class="app-sidebar__mobile-toggle" type="button" data-sidebar-toggle aria-expanded="false" aria-controls="app-sidebar-content">
+         Menü
+      </button>
+   </div>
 
-   {{! check if a menu is assigned to the Main menu position }}
-   {{#if menus.mainMenu}}
-      {{> menu menus.mainMenu}}
-   {{/if}}
-   {{! /check if a menu is assigned to the Main menu position }}
+   <div class="app-sidebar__content" id="app-sidebar-content" data-sidebar-content>
+      <div class="app-sidebar__section app-sidebar__section--menu">
+         {{#if menus.mainMenu}}
+            {{> menu menus.mainMenu}}
+         {{/if}}
+         {{{@customSearchInput}}}
+      </div>
 
-   {{! display search plugin (searchbox: input + button) }}
-      {{{@customSearchInput}}} 
-   {{! /display search plugin (searchbox: input + button) }}
+      <div class="app-sidebar__section app-sidebar__section--posts card">
+         <h2>{{ translate 'partials.sidebar.featuredPosts' }}</h2>
+         {{#if featuredPosts}}
+            <ul class="app-sidebar__posts-list">
+               {{#each featuredPosts}}
+                  <li>
+                     <a href="{{url}}">{{title}}</a>
+                  </li>
+               {{/each}}
+            </ul>
+         {{else}}
+            <p class="app-sidebar__posts-empty">{{ translate 'partials.sidebar.noFeaturedPosts' }}</p>
+         {{/if}}
+      </div>
 
-</header>
+      <button class="theme-toggle app-sidebar__theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Zum Dark Mode wechseln">
+         <svg class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+         </svg>
+         <svg class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true" viewBox="0 0 24 24" focusable="false" hidden>
+            <path d="M12 3a7 7 0 1 0 9 9 9 9 0 1 1-9-9z"></path>
+         </svg>
+         <span class="theme-toggle__text">Theme wechseln</span>
+      </button>
+   </div>
+</nav>
