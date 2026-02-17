@@ -43,6 +43,7 @@ Dev documentation is available at [https://getpublii.com/dev/](https://getpublii
 - Light/Dark mode toggle with LocalStorage persistence
 - Card-based design system with accent links
 - Homepage split layout (Credo + posts carousel)
+- Homepage carousel supports arrows, keyboard and touch swipe
 - Post hero layout with boxed/wide mode via Post Options
 - FAQ accordion support with animated expand/collapse
 - Lottie embeds with configurable width/height/loop
@@ -60,6 +61,8 @@ Use the following HTML pattern in post content for FAQ items:
 	</div>
 </div>
 ```
+
+You can also use a non-button question wrapper; the theme adds button semantics automatically.
 
 Use the following HTML pattern in post content for Lottie animations:
 

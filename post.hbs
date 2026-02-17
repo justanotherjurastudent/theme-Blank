@@ -162,10 +162,10 @@
 
                   {{! loop that generates a list of related posts}}
                   {{#each ../relatedPosts}}
-                     <section>
+                     <section class="related-post-card card">
                         {{#featuredImage}}
                            {{#if url}}
-                              <a href="{{../url}}" >
+                              <a href="{{../url}}" class="related-post-card__media-link">
                                  <img
                                     src="{{url}}"
                                     {{#if @config.site.responsiveImages}}
@@ -174,16 +174,18 @@
                                     {{ lazyload "lazy" }}
                                     height="{{height}}"
                                     width="{{width}}"
-                                    alt="{{alt}}">
+                                    alt="{{alt}}"
+                                    class="related-post-card__image">
                               </a>
                            {{/if}}
                         {{/featuredImage}}
 
-                        <h4>
-                           <a href="{{url}}">{{title}}</a>
-                        </h4>
-
-                        <p>{{{ excerpt }}}</p>
+                        <div class="related-post-card__body">
+                           <h4 class="related-post-card__title">
+                              <a href="{{url}}">{{title}}</a>
+                           </h4>
+                           <p class="related-post-card__excerpt">{{excerpt}}</p>
+                        </div>
 
                      </section>
                   {{/each}}

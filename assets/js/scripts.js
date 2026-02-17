@@ -83,6 +83,12 @@
 		}
 
 		let currentIndex = 0;
+		let touchStartX = 0;
+		let touchStartY = 0;
+		let touchEndX = 0;
+		let touchEndY = 0;
+		let suppressClickAfterSwipe = false;
+		const swipeThreshold = 40;
 
 		const getCardsVisible = () => {
 			if (window.innerWidth >= 1100) {
@@ -108,15 +114,80 @@
 			nextButton.disabled = currentIndex >= maxIndex;
 		};
 
-		previousButton.addEventListener('click', () => {
+		const goToPrevious = () => {
 			currentIndex -= 1;
 			updateCarousel();
-		});
+		};
 
-		nextButton.addEventListener('click', () => {
+		const goToNext = () => {
 			currentIndex += 1;
 			updateCarousel();
+		};
+
+		previousButton.addEventListener('click', goToPrevious);
+
+		nextButton.addEventListener('click', goToNext);
+
+		carouselElement.setAttribute('tabindex', '0');
+		carouselElement.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				goToPrevious();
+			}
+
+			if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				goToNext();
+			}
 		});
+
+		carouselElement.addEventListener('touchstart', (event) => {
+			touchStartX = event.changedTouches[0].screenX;
+			touchStartY = event.changedTouches[0].screenY;
+			touchEndX = touchStartX;
+			touchEndY = touchStartY;
+			suppressClickAfterSwipe = false;
+		});
+
+		carouselElement.addEventListener('touchmove', (event) => {
+			touchEndX = event.changedTouches[0].screenX;
+			touchEndY = event.changedTouches[0].screenY;
+		});
+
+		carouselElement.addEventListener('touchend', (event) => {
+			touchEndX = event.changedTouches[0].screenX;
+			touchEndY = event.changedTouches[0].screenY;
+			const swipeDistanceX = touchEndX - touchStartX;
+			const swipeDistanceY = touchEndY - touchStartY;
+
+			if (Math.abs(swipeDistanceX) < swipeThreshold || Math.abs(swipeDistanceX) <= Math.abs(swipeDistanceY)) {
+				return;
+			}
+
+			suppressClickAfterSwipe = true;
+			window.setTimeout(() => {
+				suppressClickAfterSwipe = false;
+			}, 150);
+
+			if (swipeDistanceX > 0) {
+				goToPrevious();
+			} else {
+				goToNext();
+			}
+		});
+
+		carouselElement.addEventListener(
+			'click',
+			(event) => {
+				if (!suppressClickAfterSwipe) {
+					return;
+				}
+
+				event.preventDefault();
+				event.stopPropagation();
+			},
+			true
+		);
 
 		window.addEventListener('resize', updateCarousel);
 		updateCarousel();
@@ -136,9 +207,17 @@
 			const questionId = `faq-question-${itemIndex}`;
 			const answerId = `faq-answer-${itemIndex}`;
 			const initiallyOpen = faqItem.classList.contains('is-open');
+			const isQuestionButton = questionElement.tagName.toLowerCase() === 'button';
 
 			questionElement.setAttribute('id', questionId);
-			questionElement.setAttribute('type', 'button');
+
+			if (isQuestionButton) {
+				questionElement.setAttribute('type', 'button');
+			} else {
+				questionElement.setAttribute('role', 'button');
+				questionElement.setAttribute('tabindex', '0');
+			}
+
 			questionElement.setAttribute('aria-controls', answerId);
 			questionElement.setAttribute('aria-expanded', initiallyOpen ? 'true' : 'false');
 
@@ -152,11 +231,22 @@
 				answerElement.style.maxHeight = `${answerElement.scrollHeight}px`;
 			}
 
-			questionElement.addEventListener('click', () => {
+			const toggleFaqItem = () => {
 				const isOpen = faqItem.classList.toggle('is-open');
 				questionElement.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 				answerElement.style.maxHeight = isOpen ? `${answerElement.scrollHeight}px` : '0px';
-			});
+			};
+
+			questionElement.addEventListener('click', toggleFaqItem);
+
+			if (!isQuestionButton) {
+				questionElement.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter' || event.key === ' ') {
+						event.preventDefault();
+						toggleFaqItem();
+					}
+				});
+			}
 		});
 	};
 
