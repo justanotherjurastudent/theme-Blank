@@ -15,6 +15,13 @@
         "toc": {
             "title": "Inhalt",
             "ariaLabel": "Inhaltsverzeichnis"
+        },
+        "mobile": {
+            "open": "Navigation öffnen",
+            "close": "Navigation schließen",
+            "menu": "Menü",
+            "toc": "TOC",
+            "emptyToc": "Kein Inhaltsverzeichnis verfügbar"
         }
     },
     "post": {

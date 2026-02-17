@@ -8,6 +8,29 @@
    
 </footer>
 
+<div class="mobile-sidebar-ui" data-mobile-sidebar-ui>
+   <button type="button" class="mobile-sidebar-fab" data-mobile-sidebar-open aria-label="{{ translate 'partials.mobile.open' }}" aria-controls="mobile-sidebar-drawer" aria-expanded="false">
+      ☰
+   </button>
+
+   <div class="mobile-sidebar-overlay" data-mobile-sidebar-overlay></div>
+
+   <aside id="mobile-sidebar-drawer" class="mobile-sidebar-drawer" data-mobile-sidebar-drawer data-empty-toc="{{ translate 'partials.mobile.emptyToc' }}" aria-hidden="true">
+      <button type="button" class="mobile-sidebar-close" data-mobile-sidebar-close aria-label="{{ translate 'partials.mobile.close' }}">✕</button>
+
+      <div class="mobile-sidebar-drawer__inner">
+         <div class="mobile-tabs" data-mobile-tabs>
+            <button type="button" class="mobile-tabs__tab is-active" data-mobile-tab="menu">{{ translate 'partials.mobile.menu' }}</button>
+            <button type="button" class="mobile-tabs__tab" data-mobile-tab="toc">{{ translate 'partials.mobile.toc' }}</button>
+            <span class="mobile-tabs__indicator" data-mobile-tab-indicator aria-hidden="true"></span>
+         </div>
+
+         <section class="mobile-tab-panel is-active" data-mobile-panel="menu"></section>
+         <section class="mobile-tab-panel" data-mobile-panel="toc"></section>
+      </div>
+   </aside>
+</div>
+
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
 <script async src="{{js "scripts.js"}}"></script>
 

@@ -98,6 +98,181 @@
 		syncToViewport();
 	};
 
+	const initMobileSidebarDrawer = () => {
+		const drawerElement = document.querySelector('[data-mobile-sidebar-drawer]');
+		const openButton = document.querySelector('[data-mobile-sidebar-open]');
+		const closeButton = document.querySelector('[data-mobile-sidebar-close]');
+		const overlayElement = document.querySelector('[data-mobile-sidebar-overlay]');
+		const tabsContainer = document.querySelector('[data-mobile-tabs]');
+		const indicatorElement = document.querySelector('[data-mobile-tab-indicator]');
+		const tabButtons = Array.from(document.querySelectorAll('[data-mobile-tab]'));
+		const panelElements = Array.from(document.querySelectorAll('[data-mobile-panel]'));
+
+		if (!drawerElement || !openButton || !closeButton || !overlayElement || !tabsContainer || !indicatorElement) {
+			return;
+		}
+
+		const isMobileQuery = window.matchMedia('(max-width: 767px)');
+		const emptyTocMessage = drawerElement.getAttribute('data-empty-toc') || 'No table of contents available';
+
+		const setIndicatorPosition = (tabName) => {
+			const activeButton = tabButtons.find((button) => button.getAttribute('data-mobile-tab') === tabName);
+
+			if (!activeButton) {
+				return;
+			}
+
+			indicatorElement.style.left = `${activeButton.offsetLeft + 2}px`;
+			indicatorElement.style.width = `${Math.max(0, activeButton.offsetWidth - 4)}px`;
+		};
+
+		const setActiveTab = (tabName) => {
+			tabButtons.forEach((button) => {
+				const isActive = button.getAttribute('data-mobile-tab') === tabName;
+				button.classList.toggle('is-active', isActive);
+				button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+			});
+
+			panelElements.forEach((panelElement) => {
+				const isActive = panelElement.getAttribute('data-mobile-panel') === tabName;
+				panelElement.classList.toggle('is-active', isActive);
+			});
+
+			setIndicatorPosition(tabName);
+		};
+
+		const wireDrawerThemeToggle = (containerElement) => {
+			const toggleButton = containerElement.querySelector('[data-theme-toggle]');
+
+			if (!toggleButton) {
+				return;
+			}
+
+			toggleButton.addEventListener('click', () => {
+				const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+				const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+				window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+				applyTheme(nextTheme, Array.from(document.querySelectorAll('[data-theme-toggle]')));
+			});
+		};
+
+		const buildMenuPanel = () => {
+			const menuPanel = panelElements.find((panel) => panel.getAttribute('data-mobile-panel') === 'menu');
+			const sourceSidebar = document.querySelector('.app-sidebar');
+
+			if (!menuPanel || !sourceSidebar) {
+				return;
+			}
+
+			const sidebarClone = sourceSidebar.cloneNode(true);
+			sidebarClone.classList.add('mobile-sidebar-clone');
+			sidebarClone.querySelector('[data-sidebar-toggle]')?.remove();
+			sidebarClone.querySelector('[data-sidebar-content]')?.removeAttribute('id');
+			sidebarClone.querySelector('[data-sidebar-content]')?.removeAttribute('hidden');
+			sidebarClone.querySelector('#logo img')?.remove();
+			sidebarClone.querySelector('#logo')?.classList.add('mobile-brand-link');
+			sidebarClone.querySelector('#logo')?.removeAttribute('id');
+
+			menuPanel.replaceChildren(sidebarClone);
+			wireDrawerThemeToggle(sidebarClone);
+		};
+
+		const buildTocPanel = () => {
+			const tocPanel = panelElements.find((panel) => panel.getAttribute('data-mobile-panel') === 'toc');
+			const tocSidebarInner = document.querySelector('.toc-sidebar__inner');
+
+			if (!tocPanel) {
+				return;
+			}
+
+			if (!tocSidebarInner || tocSidebarInner.parentElement?.hidden) {
+				const emptyElement = document.createElement('p');
+				emptyElement.className = 'app-sidebar__menu-empty';
+				emptyElement.textContent = emptyTocMessage;
+				tocPanel.replaceChildren(emptyElement);
+				return;
+			}
+
+			const tocClone = tocSidebarInner.cloneNode(true);
+			tocClone.addEventListener('click', (event) => {
+				const tocLink = event.target.closest('a[href^="#"]');
+
+				if (!tocLink) {
+					return;
+				}
+
+				window.setTimeout(() => {
+					closeDrawer();
+				}, 0);
+			});
+			tocPanel.replaceChildren(tocClone);
+		};
+
+		const buildPanels = () => {
+			buildMenuPanel();
+			buildTocPanel();
+		};
+
+		const openDrawer = () => {
+			if (!isMobileQuery.matches) {
+				return;
+			}
+
+			buildPanels();
+			setActiveTab('menu');
+			window.requestAnimationFrame(() => {
+				setIndicatorPosition('menu');
+			});
+			document.body.classList.add('is-mobile-drawer-open');
+			drawerElement.setAttribute('aria-hidden', 'false');
+			openButton.setAttribute('aria-expanded', 'true');
+		};
+
+		const closeDrawer = () => {
+			document.body.classList.remove('is-mobile-drawer-open');
+			drawerElement.setAttribute('aria-hidden', 'true');
+			openButton.setAttribute('aria-expanded', 'false');
+		};
+
+		tabButtons.forEach((buttonElement) => {
+			buttonElement.addEventListener('click', () => {
+				setActiveTab(buttonElement.getAttribute('data-mobile-tab'));
+			});
+		});
+
+		openButton.addEventListener('click', openDrawer);
+		closeButton.addEventListener('click', closeDrawer);
+		overlayElement.addEventListener('click', closeDrawer);
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				closeDrawer();
+			}
+		});
+
+		if (typeof isMobileQuery.addEventListener === 'function') {
+			isMobileQuery.addEventListener('change', () => {
+				setIndicatorPosition(tabButtons.find((button) => button.classList.contains('is-active'))?.getAttribute('data-mobile-tab') || 'menu');
+				if (!isMobileQuery.matches) {
+					closeDrawer();
+				}
+			});
+		} else if (typeof isMobileQuery.addListener === 'function') {
+			isMobileQuery.addListener(() => {
+				setIndicatorPosition(tabButtons.find((button) => button.classList.contains('is-active'))?.getAttribute('data-mobile-tab') || 'menu');
+				if (!isMobileQuery.matches) {
+					closeDrawer();
+				}
+			});
+		}
+
+		setActiveTab('menu');
+		window.addEventListener('resize', () => {
+			const activeTab = tabButtons.find((button) => button.classList.contains('is-active'))?.getAttribute('data-mobile-tab') || 'menu';
+			setIndicatorPosition(activeTab);
+		});
+	};
+
 	const initLinksTargetBlank = () => {
 		const links = document.querySelectorAll('a[href]');
 
@@ -600,6 +775,7 @@
 		initMobileSidebar();
 		initLinksTargetBlank();
 		initTocSidebar();
+		initMobileSidebarDrawer();
 		initHomeCarousel();
 		initFaqAccordions();
 		initLottiePlayers();

@@ -18,6 +18,14 @@
       "toc": {
          "title": "Inhalt",
          "ariaLabel": "Inhaltsverzeichnis"
+      },
+
+      "mobile": {
+         "open": "Open navigation",
+         "close": "Close navigation",
+         "menu": "Menu",
+         "toc": "TOC",
+         "emptyToc": "No table of contents available"
       }
    },
 
