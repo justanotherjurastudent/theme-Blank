@@ -592,21 +592,7 @@
 		}
 
 		document.body.classList.add('is-home-layout');
-
-		const applyOverflowMode = () => {
-			const isDesktopOrTablet = window.matchMedia('(min-width: 768px)').matches;
-
-			if (!isDesktopOrTablet) {
-				document.body.classList.add('allow-scroll');
-				return;
-			}
-
-			const pageNeedsScroll = document.documentElement.scrollHeight > window.innerHeight;
-			document.body.classList.toggle('allow-scroll', pageNeedsScroll);
-		};
-
-		window.addEventListener('resize', applyOverflowMode);
-		applyOverflowMode();
+		document.body.classList.remove('allow-scroll');
 	};
 
 	document.addEventListener('DOMContentLoaded', () => {

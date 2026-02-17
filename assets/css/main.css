@@ -347,13 +347,27 @@ footer {
    align-content: end;
    gap: 0.35rem;
    padding: 1.25rem;
-   background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent 60%);
+   background: linear-gradient(to top, rgba(0, 0, 0, 0.38), transparent 55%);
    color: #fff;
 }
 
 .home-credo__title,
 .home-credo__text {
    margin: 0;
+}
+
+.home-credo__title {
+   font-size: clamp(2rem, 8vw, 5rem);
+   font-style: italic;
+   font-weight: 900;
+   text-transform: uppercase;
+   letter-spacing: 0.02em;
+   line-height: 0.9;
+   text-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.home-credo__text {
+   display: none;
 }
 
 .home-carousel {
@@ -402,8 +416,8 @@ footer {
    overflow-x: hidden;
    overflow-y: visible;
    overflow-clip-margin: 1.75rem;
-   padding: 0.65rem 0.9rem 0.25rem;
-   margin: -0.65rem -0.9rem -0.25rem;
+   padding: 0.85rem 1.4rem 0.35rem;
+   margin: -0.85rem -1.4rem -0.35rem;
    touch-action: pan-y;
    overscroll-behavior-x: contain;
 }
@@ -1007,7 +1021,7 @@ body.is-home-layout {
 }
 
 body.is-home-layout.allow-scroll {
-   overflow-y: auto;
+   overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -1055,6 +1069,10 @@ body.is-home-layout.allow-scroll {
       max-height: none;
       grid-template-rows: auto;
       overflow: visible;
+   }
+
+   body.is-home-layout .app-sidebar {
+      margin-top: 1rem;
    }
 
    .app-sidebar__mobile-toggle {
