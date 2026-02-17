@@ -1,49 +1,51 @@
 {
-   "partials": {
-      "pagination": {
-         "prev": "Previous",
-         "next": "Next"
-      },
-      "sidebar": {
-         "selectedPosts": "Selected posts",
-         "featuredPosts": "Featured posts",
-         "authors": "Authors",
-         "noFeaturedPosts": "No featured posts available"
-      },
-      "toc": {
-         "title": "Inhalt",
-         "ariaLabel": "Inhaltsverzeichnis"
-      }
-   },
-   "post": {
-      "publishedBy": "By ",
-      "lastUpdatedDate": "Updated on: ",
-      "previousPost": "Previous",
-      "nextPost": "Next",
-      "relatedPosts": "Author: "
-   },
-   "page": {
-      "publishedBy": "By ",
-      "lastUpdatedDate": "Updated on: ",
-      "childPages": "Child pages"
-   },
-   "tags": {
-      "tagsPageTitle": "Tags",
-      "description": "Collection of all tags",
-      "post": {
-         "1": "Post",
-         "default": "Posts"
-      }
-   },
-   "author": {
-      "visitWebsite": "Visit website"
-   },
-   "home": {
-      "latestPosts": "Latest posts"
-   },
-   "error": {
-      "404": "Error 404",
-      "message": "The page you were looking for appears to have been moved, deleted or does not exist. You could go back to where you were or head straight to our home page.",
-      "button": "Go Home"
-   }
+    "partials": {
+        "pagination": {
+            "prev": "Zurück",
+            "next": "Weiter"
+        },
+        "sidebar": {
+            "selectedPosts": "Ausgewählte Beiträge",
+            "featuredPosts": "Hervorgehobene Beiträge",
+            "authors": "Autoren",
+            "noMenuItems": "Keine Menüeinträge gefunden. Füge Links in Publii unter Menüs > Menü bearbeiten > Element hinzufügen hinzu.",
+            "noMenuAssigned": "Noch kein Hauptmenü zugewiesen.",
+            "noFeaturedPosts": "Keine hervorgehobenen Beiträge verfügbar"
+        },
+        "toc": {
+            "title": "Inhalt",
+            "ariaLabel": "Inhaltsverzeichnis"
+        }
+    },
+    "post": {
+        "publishedBy": "Von ",
+        "lastUpdatedDate": "Aktualisiert am: ",
+        "previousPost": "Vorheriger Beitrag",
+        "nextPost": "Nächster Beitrag",
+        "relatedPosts": "Autor: "
+    },
+    "page": {
+        "publishedBy": "Von ",
+        "lastUpdatedDate": "Aktualisiert am: ",
+        "childPages": "Unterseiten"
+    },
+    "tags": {
+        "tagsPageTitle": "Schlagwörter",
+        "description": "Sammlung aller Schlagwörter",
+        "post": {
+            "1": "Beitrag",
+            "default": "Beiträge"
+        }
+    },
+    "author": {
+        "visitWebsite": "Website besuchen"
+    },
+    "home": {
+        "latestPosts": "Neueste Beiträge"
+    },
+    "error": {
+        "404": "Fehler 404",
+        "message": "Die gewünschte Seite wurde möglicherweise verschoben, gelöscht oder existiert nicht. Sie können zurückgehen oder direkt zur Startseite navigieren.",
+        "button": "Zur Startseite"
+    }
 }

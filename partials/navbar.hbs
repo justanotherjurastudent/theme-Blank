@@ -17,7 +17,13 @@
    <div class="app-sidebar__content" id="app-sidebar-content" data-sidebar-content>
       <div class="app-sidebar__section app-sidebar__section--menu">
          {{#if menus.mainMenu}}
-            {{> menu menus.mainMenu}}
+            {{#if menus.mainMenu.items}}
+               {{> menu menus.mainMenu}}
+            {{else}}
+               <p class="app-sidebar__menu-empty">{{ translate 'partials.sidebar.noMenuItems' }}</p>
+            {{/if}}
+         {{else}}
+            <p class="app-sidebar__menu-empty">{{ translate 'partials.sidebar.noMenuAssigned' }}</p>
          {{/if}}
          {{{@customSearchInput}}}
       </div>

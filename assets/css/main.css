@@ -178,6 +178,12 @@ footer {
    width: 100%;
 }
 
+.app-sidebar__menu-empty {
+   margin: 0;
+   font-size: 0.9rem;
+   opacity: 0.8;
+}
+
 .theme-toggle {
    border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
    background: var(--color-surface);

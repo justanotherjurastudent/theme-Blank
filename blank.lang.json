@@ -10,6 +10,8 @@
          "selectedPosts": "Selected posts",
          "featuredPosts": "Featured posts",
          "authors": "Authors",
+         "noMenuItems": "No menu items found. Add links in Publii under Menus > Edit menu > Add item.",
+         "noMenuAssigned": "No main menu assigned yet.",
          "noFeaturedPosts": "No featured posts available"
       },
 
