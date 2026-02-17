@@ -51,6 +51,8 @@ Dev documentation is available at [https://getpublii.com/dev/](https://getpublii
 
 ### Content authoring helpers
 
+Editor quick reference: [docs/editor-cheatsheet.md](docs/editor-cheatsheet.md)
+
 Use the following HTML pattern in post content for FAQ items:
 
 ```html
