@@ -93,6 +93,112 @@
             "type": "text"
         },
         {
+            "name": "homeCredoHeight",
+            "label": "Homepage credo height",
+            "group": "Layout",
+            "note": "Viewport height used for the credo section on desktop and tablet",
+            "value": "33vh",
+            "type": "text"
+        },
+        {
+            "name": "homeCarouselPosts",
+            "label": "Homepage carousel posts",
+            "group": "Layout",
+            "note": "Maximum number of latest posts in homepage carousel",
+            "value": "6",
+            "type": "range",
+            "min": 3,
+            "max": 12,
+            "step": 1
+        },
+        {
+            "name": "separator",
+            "type": "separator",
+            "label": "Color theme",
+            "group": "Layout",
+            "size": "small"
+        },
+        {
+            "name": "defaultTheme",
+            "label": "Default theme",
+            "group": "Layout",
+            "value": "light",
+            "type": "select",
+            "options": [
+                {
+                    "label": "Light",
+                    "value": "light"
+                },
+                {
+                    "label": "Dark",
+                    "value": "dark"
+                }
+            ]
+        },
+        {
+            "name": "lightAccent",
+            "label": "Light accent color",
+            "group": "Layout",
+            "value": "#7D1E3D",
+            "type": "text"
+        },
+        {
+            "name": "lightSecondary",
+            "label": "Light secondary color",
+            "group": "Layout",
+            "value": "#D8C5B0",
+            "type": "text"
+        },
+        {
+            "name": "darkAccent",
+            "label": "Dark accent color",
+            "group": "Layout",
+            "value": "#4A83D8",
+            "type": "text"
+        },
+        {
+            "name": "darkSecondary",
+            "label": "Dark secondary color",
+            "group": "Layout",
+            "value": "#3F4652",
+            "type": "text"
+        },
+        {
+            "name": "graphiteBackground",
+            "label": "Dark background color",
+            "group": "Layout",
+            "value": "#1E232B",
+            "type": "text"
+        },
+        {
+            "name": "separator",
+            "type": "separator",
+            "label": "Post content",
+            "group": "Layout",
+            "size": "small"
+        },
+        {
+            "name": "lottieDefaultWidth",
+            "label": "Lottie default width",
+            "group": "Layout",
+            "value": "100%",
+            "type": "text"
+        },
+        {
+            "name": "lottieDefaultHeight",
+            "label": "Lottie default height",
+            "group": "Layout",
+            "value": "320px",
+            "type": "text"
+        },
+        {
+            "name": "lottieDefaultLoop",
+            "label": "Lottie default loop",
+            "group": "Layout",
+            "value": true,
+            "type": "checkbox"
+        },
+        {
             "name": "separator",
             "type": "separator",
             "label": "Selected Posts",
@@ -209,6 +315,22 @@
                 {
                     "label": "Disabled",
                     "value": 0
+                }
+            ]
+        },
+        {
+            "name": "postLayout",
+            "label": "Post layout",
+            "value": "boxed",
+            "type": "select",
+            "options": [
+                {
+                    "label": "Boxed",
+                    "value": "boxed"
+                },
+                {
+                    "label": "Wide",
+                    "value": "wide"
                 }
             ]
         }

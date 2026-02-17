@@ -1,89 +1,59 @@
 {{! Front page; this file renders a front page with a list of the latest posts }}
 {{> head}}
 {{> navbar}}
-<main>
-    {{! loop that generates a list of posts }}
-    {{#each posts}}
-        <article>
-
-            {{! featured image }}
-            {{#featuredImage}}
-                {{! checks if an image exists }}
-                {{#if url}}
-                    <figure>
-                        <img
-                            src="{{url}}"
-                            {{! checks if the Responsive Images option (located in Site Settings -> Website Speed) is enabled  }}
-                            {{#if @config.site.responsiveImages}}
-                                {{responsiveImageAttributes 'featuredImage' srcset sizes}}
-                            {{/if}}
-                            {{! generates a native loading attribute; if the Media Lazy Load option (located in Site Settings -> Website Speed) is disabled, the loading attribute is not generated  }}
-                            {{lazyload "lazy"}}
-                            height="{{height}}"
-                            width="{{width}}"
-                            alt="{{alt}}">
-
-                            {{! checks if a caption and credits exist  }}
-                            {{#checkIfAny caption credits}}
-                                <figcaption>
-                                    {{caption}}
-                                    {{credits}}
-                                </figcaption>                      
-                            {{/checkIfAny}}
-                            {{! /checks if a caption and credits exist  }}
-
-                     </figure>
-                {{/if}}
-                {{! /checks if an image exists }}
-            {{/featuredImage}}
-            {{! /featured image }}
-
-            {{! post title }}
-            <h2>
-                <a href="{{url}}">{{title}}</a>
-            </h2>
-            {{! /post title }}
-
-            {{! post creation date }}
-            <time datetime="{{date createdAt 'YYYY-MM-DDTHH:mm'}}">
-                {{date createdAt}}
-            </time>
-            {{! /post creation date }}
-
-            {{! post author }}
-            {{#author}}
-                <img 
-                    src="{{avatarImage.url}}" 
-                    {{lazyload "lazy"}} 
-                    alt="{{avatarImage.alt}}" 
-                    height="{{avatarImage.height}}"  
-                    width="{{avatarImage.width}}">
-                <a href="{{url}}">{{name}}</a>
-            {{/author}}
-            {{! /post author }}
-
-            {{! main tag - if no main tag is selected, then the first tag in the list of all tags will be used }}
-            {{#if mainTag}}
-                <a href="{{mainTag.url}}">{{mainTag.name}}</a>
+<main class="home-layout">
+    <section class="home-credo" {{#if @website.coverImage}}style="background-image:url('{{@website.coverImage}}');"{{/if}}>
+        <div class="home-credo__overlay">
+            <h1 class="home-credo__title">{{@website.name}}</h1>
+            {{#if @website.description}}
+                <p class="home-credo__text">{{@website.description}}</p>
             {{/if}}
-            {{! /main tag }}
+        </div>
+    </section>
 
-            {{! post excerpt - the Custom excerpt is generated when the Read More button is used when editing a post }}
-            {{#if hasCustomExcerpt}}
-                {{{ excerpt }}}
-            {{else}}
-                <p>{{{ excerpt }}}</p>
-            {{/if}}
-            {{! /post excerpt }}
+    <section class="home-carousel card" data-home-carousel>
+        <div class="home-carousel__header">
+            <h2>{{ translate "home.latestPosts" }}</h2>
+            <div class="home-carousel__controls">
+                <button type="button" class="home-carousel__control" data-carousel-prev aria-label="Vorheriger Beitrag">&larr;</button>
+                <button type="button" class="home-carousel__control" data-carousel-next aria-label="Nächster Beitrag">&rarr;</button>
+            </div>
+        </div>
 
-        </article>
-    {{/each}}
-    {{! /loop that generates list of posts }}
-    
+        <div class="home-carousel__viewport">
+            <div class="home-carousel__track" data-carousel-track>
+                {{#each posts}}
+                    {{#checkIf @index '<' @config.custom.homeCarouselPosts}}
+                        <article class="home-carousel__slide" data-carousel-slide>
+                            <div class="post-card card">
+                                {{#featuredImage}}
+                                    {{#if url}}
+                                        <a href="{{../url}}" class="post-card__media-link">
+                                            <img
+                                                src="{{url}}"
+                                                {{#if @config.site.responsiveImages}}
+                                                    {{responsiveImageAttributes 'featuredImage' srcset sizes}}
+                                                {{/if}}
+                                                {{lazyload "lazy"}}
+                                                height="{{height}}"
+                                                width="{{width}}"
+                                                alt="{{alt}}"
+                                                class="post-card__image">
+                                        </a>
+                                    {{/if}}
+                                {{/featuredImage}}
+
+                                <div class="post-card__body">
+                                    <h3 class="post-card__title"><a href="{{url}}">{{title}}</a></h3>
+                                    <time datetime="{{date createdAt 'YYYY-MM-DDTHH:mm'}}">{{date createdAt}}</time>
+                                    <p class="post-card__excerpt">{{excerpt}}</p>
+                                </div>
+                            </div>
+                        </article>
+                    {{/checkIf}}
+                {{/each}}
+            </div>
+        </div>
+    </section>
 </main>
-<aside>
-    {{> sidebar}}
-</aside>
-
-{{> pagination}}
 {{> footer}}

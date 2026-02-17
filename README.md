@@ -38,6 +38,37 @@ Bob Mitro TidyCustoms ([@tidycustoms](http://twitter.com/tidycustoms) - [https:/
 
 Dev documentation is available at [https://getpublii.com/dev/](https://getpublii.com/dev/)
 
+### Theme features in this implementation
+
+- Light/Dark mode toggle with LocalStorage persistence
+- Card-based design system with accent links
+- Homepage split layout (Credo + posts carousel)
+- Post hero layout with boxed/wide mode via Post Options
+- FAQ accordion support with animated expand/collapse
+- Lottie embeds with configurable width/height/loop
+- Responsive video embeds
+
+### Content authoring helpers
+
+Use the following HTML pattern in post content for FAQ items:
+
+```html
+<div class="faq-item">
+	<button class="faq-question">Question text</button>
+	<div class="faq-answer">
+		<p>Answer text</p>
+	</div>
+</div>
+```
+
+Use the following HTML pattern in post content for Lottie animations:
+
+```html
+<div class="lottie-embed" data-src="https://assets9.lottiefiles.com/packages/lf20_xxx.json" data-width="100%" data-height="320px" data-loop="true"></div>
+```
+
+`data-width`, `data-height` and `data-loop` are optional. If missing, theme defaults from Theme Options are applied.
+
 
 
 ### License
