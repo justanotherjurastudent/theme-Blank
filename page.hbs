@@ -13,7 +13,7 @@
 
    {{! indicates the page's context}}
    {{#page}}
-      <article>
+      <article class="post-view post-view--boxed card">
          <header>
 
             {{! page title }}
@@ -77,7 +77,7 @@
          {{! /featured image }}
 
          {{! page body }}
-         <div id="page-entry">
+         <div id="page-entry" class="post-entry card">
             {{{text}}}
          </div>
          {{! /page body }}
@@ -86,7 +86,7 @@
          {{#if @config.page.displayAuthorBio}}
             {{! author bio section }}
             {{#author}}
-               <div id="author-bio">
+               <div id="author-bio" class="card">
 
                   {{! checks if an author avatar exists }}
                   {{#if avatar}}
@@ -124,7 +124,7 @@
       {{#if @config.page.displayChildPages}}
          {{! Checks if subpages exist }}
          {{#if subpages}}
-            <div class="subpages">
+            <div class="subpages card">
                
                {{! Displays the heading for child pages }}
                <h2>{{ translate 'page.childPages' }}</h2>

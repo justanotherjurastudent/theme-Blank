@@ -5,12 +5,13 @@
    
    {{! indicates the author's context }}
    {{#author}}
+      <section class="archive-header card archive-header--author">
 
       {{! author featured image }}
       {{#featuredImage}}
          {{! checks if an image exists }}
          {{#if url}}
-            <figure>
+            <figure class="archive-header__image">
                <img
                   src="{{url}}"
                   {{! checks if the Responsive Images option (located in Site Settings -> Website Speed) is enabled  }}
@@ -45,7 +46,8 @@
             {{ lazyload "eager" }} 
             alt="{{avatarImage.alt}}" 
             height="{{avatarImage.height}}" 
-            width="{{avatarImage.width}}">
+         width="{{avatarImage.width}}"
+         class="archive-header__avatar">
       {{/if}}
       {{! /check if an author avatar exists }}
 
@@ -60,7 +62,7 @@
 
       {{! check if an author description exists }}
       {{#if description}}
-         <div> {{{description}}} </div>
+         <div>{{description}}</div>
       {{/if}}
       {{! /check if a author description exists }}
 
@@ -76,18 +78,22 @@
       {{/if}}
       {{! /check if a author website URL exists }}
 
+      </section>
+
    {{/author}}
    {{! /indicates the author's context }}
 
 
    {{! loop that generates a list of posts }}
+   <div class="archive-posts-grid">
    {{#each posts}}
-      <article>
+      <article class="archive-post-card card">
 
          {{! featured image }}
          {{#featuredImage}}
             {{! checks if an image exists }}
             {{#if url}}
+               <a href="{{../url}}" class="archive-post-card__media-link">
                <img
                      src="{{url}}"
                      {{! checks if the Responsive Images option (located in Site Settings -> Website Speed) is enabled  }}
@@ -98,14 +104,18 @@
                      {{lazyload "lazy"}}
                      height="{{height}}"
                      width="{{width}}"
-                     alt="{{alt}}">
+                        alt="{{alt}}"
+                        class="archive-post-card__image">
+                     </a>
             {{/if}}
             {{! /checks if an image exists }}
          {{/featuredImage}}
          {{! /featured image }}
 
+         <div class="archive-post-card__body">
+
          {{! post title }}
-         <h2>
+         <h2 class="archive-post-card__title">
             <a href="{{url}}">{{title}}</a>
          </h2>
          {{! /post title }}
@@ -131,20 +141,23 @@
          {{! main tag - if not selected, the first tag in the list of all tags
          will be displayed }}
          {{#if mainTag}}
-            <a href="{{mainTag.url}}">{{mainTag.name}}</a>
+            <a href="{{mainTag.url}}" class="archive-post-card__tag">{{mainTag.name}}</a>
          {{/if}}
          {{! /main tag }}
 
          {{! post excerpt - the Custom excerpt is generated when the Read More button is used when editing a post }}
          {{#if hasCustomExcerpt}}
-            {{{ excerpt }}}
+            {{excerpt}}
          {{else}}
-            <p>{{{ excerpt }}}</p>
+            <p class="archive-post-card__excerpt">{{excerpt}}</p>
          {{/if}}
          {{! /post excerpt }}
 
+         </div>
+
       </article>
    {{/each}}
+   </div>
    {{! /loop that generates a list of posts }}
    
 </main>

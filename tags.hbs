@@ -2,20 +2,21 @@
 {{> head}}
 {{> navbar}}
 <main>
-   
-   <h1>
-      {{ translate 'tags.tagsPageTitle' }}
-      <sup>({{tagsNumber}})</sup>
-   </h1>
+   <section class="archive-header card">
+      <h1>
+         {{ translate 'tags.tagsPageTitle' }}
+         <sup>({{tagsNumber}})</sup>
+      </h1>
 
-   <p>
-      {{ translate 'tags.description' }}
-   </p>
+      <p>
+         {{ translate 'tags.description' }}
+      </p>
+   </section>
 
-   <ul>
+   <ul class="tags-grid">
       {{! loop that generates a list of tags }}
       {{#each tags}}
-         <li>
+         <li class="tag-card card">
 
             {{! tag featured image }}
             {{#featuredImage}}
@@ -31,25 +32,26 @@
                      {{lazyload "lazy"}}
                      height="{{height}}"
                      width="{{width}}"
-                     alt="{{alt}}">
+                     alt="{{alt}}"
+                     class="tag-card__image">
                {{/if}}
                {{! /checks if an image exists }}
             {{/featuredImage}}
             {{! /tag featured image }}
 
             {{! tag name }}
-            <h2>
+            <h2 class="tag-card__title">
                <a href="{{url}}">{{name}}</a>
             </h2>
             {{! /tag name }}
 
             {{! number of posts in the tag }}
-            <span>{{postsNumber}} {{ translate "tags.post" (math postsNumber '+' 0)}} </span> 
+            <span class="tag-card__counter">{{postsNumber}} {{ translate "tags.post" (math postsNumber '+' 0)}} </span> 
             {{! /number of posts in the tag }}
 
             {{! tag description }}
             {{#if description}}
-               <div> {{{description}}} </div>                   
+               <div class="tag-card__description">{{description}}</div>
             {{/if}}
             {{! /tag description }}
 
