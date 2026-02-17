@@ -47,6 +47,12 @@
                                     <h3 class="post-card__title"><a href="{{url}}">{{title}}</a></h3>
                                     <time datetime="{{date createdAt 'YYYY-MM-DDTHH:mm'}}">{{date createdAt}}</time>
                                     <p class="post-card__excerpt">{{excerpt}}</p>
+                                    <a href="{{url}}" class="post-card__cta learn-more" aria-label="{{ translate 'home.readMore' }}: {{title}}">
+                                        <span class="circle" aria-hidden="true">
+                                            <span class="icon arrow"></span>
+                                        </span>
+                                        <span class="button-text">{{ translate 'home.readMore' }}</span>
+                                    </a>
                                 </div>
                             </div>
                         </article>

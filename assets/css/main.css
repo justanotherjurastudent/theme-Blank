@@ -361,7 +361,10 @@ footer {
    grid-template-rows: auto minmax(0, 1fr);
    gap: 1rem;
    padding: 1rem;
-   overflow: hidden;
+   overflow: visible;
+   position: relative;
+   z-index: 1;
+   isolation: isolate;
 }
 
 .home-carousel__header {
@@ -396,7 +399,11 @@ footer {
 }
 
 .home-carousel__viewport {
-   overflow: hidden;
+   overflow-x: hidden;
+   overflow-y: visible;
+   overflow-clip-margin: 1.75rem;
+   padding: 0.65rem 0.9rem 0.25rem;
+   margin: -0.65rem -0.9rem -0.25rem;
    touch-action: pan-y;
    overscroll-behavior-x: contain;
 }
@@ -410,20 +417,31 @@ footer {
 
 .home-carousel__slide {
    flex: 0 0 100%;
-   padding-right: 0.8rem;
+   padding: 0 0.45rem;
    display: flex;
+   position: relative;
+   z-index: 0;
+}
+
+.home-carousel__slide:hover,
+.home-carousel__slide:focus-within {
+   z-index: 8;
 }
 
 .home-carousel .post-card {
    min-height: clamp(360px, 50vh, 620px);
    border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
-   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+   box-shadow: none;
+   transform: none;
+   filter: none;
+   transition: filter var(--transition-base), border-color var(--transition-base);
 }
 
 .home-carousel .post-card:hover,
 .home-carousel .post-card:focus-within {
-   transform: translate(-3px, -3px);
-   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+   transform: none;
+   box-shadow: none;
+   filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.22));
    border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
 }
 
@@ -456,6 +474,97 @@ footer {
    flex-direction: column;
    gap: 0.45rem;
    flex: 1;
+}
+
+.post-card__cta.learn-more {
+   position: relative;
+   display: inline-block;
+   cursor: pointer;
+   outline: none;
+   border: 0;
+   vertical-align: middle;
+   text-decoration: none;
+   background: transparent;
+   padding: 0;
+   font-size: inherit;
+   font-family: inherit;
+   width: 100%;
+   height: auto;
+   margin-top: auto;
+}
+
+.post-card__cta.learn-more .circle {
+   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+   position: relative;
+   display: block;
+   margin: 0;
+   width: 2.55rem;
+   height: 2.55rem;
+   background: #282936;
+   border-radius: 1.625rem;
+}
+
+.post-card__cta.learn-more .circle .icon {
+   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   margin: auto;
+   background: #fff;
+}
+
+.post-card__cta.learn-more .circle .icon.arrow {
+   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+   left: 0.55rem;
+   width: 1rem;
+   height: 0.125rem;
+   background: none;
+}
+
+.post-card__cta.learn-more .circle .icon.arrow::before {
+   position: absolute;
+   content: '';
+   top: -0.29rem;
+   right: 0.0625rem;
+   width: 0.625rem;
+   height: 0.625rem;
+   border-top: 0.125rem solid #fff;
+   border-right: 0.125rem solid #fff;
+   transform: rotate(45deg);
+}
+
+.post-card__cta.learn-more .button-text {
+   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   padding: 0.58rem 0;
+   margin: 0 0 0 1.6rem;
+   color: #282936;
+   font-weight: 700;
+   font-size: 0.95rem;
+   line-height: 1.6;
+   text-align: center;
+   text-transform: uppercase;
+   text-decoration: none;
+}
+
+.post-card__cta.learn-more:hover .circle,
+.post-card__cta.learn-more:focus-visible .circle {
+   width: 100%;
+}
+
+.post-card__cta.learn-more:hover .circle .icon.arrow,
+.post-card__cta.learn-more:focus-visible .circle .icon.arrow {
+   background: #fff;
+   transform: translate(1rem, 0);
+}
+
+.post-card__cta.learn-more:hover .button-text,
+.post-card__cta.learn-more:focus-visible .button-text {
+   color: #fff;
 }
 
 .post-card__title {

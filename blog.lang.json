@@ -41,7 +41,8 @@
         "visitWebsite": "Website besuchen"
     },
     "home": {
-        "latestPosts": "Neueste Beiträge"
+        "latestPosts": "Neueste Beiträge",
+        "readMore": "Mehr lesen"
     },
     "error": {
         "404": "Fehler 404",

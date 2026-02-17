@@ -253,55 +253,139 @@
 			return;
 		}
 
-		let currentIndex = 0;
 		let touchStartX = 0;
 		let touchStartY = 0;
 		let touchEndX = 0;
 		let touchEndY = 0;
 		let suppressClickAfterSwipe = false;
+		let autoplayIntervalId = null;
+		let isAnimating = false;
 		const swipeThreshold = 40;
+		const autoplayDelay = 6000;
+		const animationDurationMs = 220;
 
-		const getCardsVisible = () => {
-			if (window.innerWidth >= 1500) {
-				return 4;
-			}
-
-			if (window.innerWidth >= 1100) {
-				return 3;
-			}
-
-			if (window.innerWidth >= 768) {
-				return 2;
-			}
-
-			return 1;
+		const setTrackTransition = (enabled) => {
+			trackElement.style.transition = enabled
+				? `transform ${animationDurationMs}ms ease-out`
+				: 'none';
 		};
 
-		const updateCarousel = () => {
-			const cardsVisible = getCardsVisible();
-			const maxIndex = Math.max(0, slideElements.length - cardsVisible);
-			currentIndex = Math.min(currentIndex, maxIndex);
+		const getSlideStep = () => {
+			const firstSlide = slideElements[0];
 
-			const translateValue = (100 / cardsVisible) * currentIndex;
-			trackElement.style.transform = `translateX(-${translateValue}%)`;
+			if (!firstSlide) {
+				return 0;
+			}
 
-			previousButton.disabled = currentIndex === 0;
-			nextButton.disabled = currentIndex >= maxIndex;
+			return firstSlide.getBoundingClientRect().width;
+		};
+
+		const resetTrackPosition = () => {
+			setTrackTransition(false);
+			trackElement.style.transform = 'translateX(0px)';
+			trackElement.getBoundingClientRect();
+			setTrackTransition(true);
 		};
 
 		const goToPrevious = () => {
-			currentIndex -= 1;
-			updateCarousel();
+			if (isAnimating || slideElements.length < 2) {
+				return;
+			}
+
+			const step = getSlideStep();
+
+			if (!step) {
+				return;
+			}
+
+			const lastSlide = slideElements.pop();
+			slideElements.unshift(lastSlide);
+			trackElement.insertBefore(lastSlide, trackElement.firstChild);
+
+			setTrackTransition(false);
+			trackElement.style.transform = `translateX(-${step}px)`;
+			trackElement.getBoundingClientRect();
+
+			setTrackTransition(true);
+			isAnimating = true;
+
+			const onTransitionEnd = (event) => {
+				if (event.target !== trackElement || event.propertyName !== 'transform') {
+					return;
+				}
+
+				trackElement.removeEventListener('transitionend', onTransitionEnd);
+				isAnimating = false;
+			};
+
+			trackElement.addEventListener('transitionend', onTransitionEnd);
+			requestAnimationFrame(() => {
+				trackElement.style.transform = 'translateX(0px)';
+			});
 		};
 
 		const goToNext = () => {
-			currentIndex += 1;
-			updateCarousel();
+			if (isAnimating || slideElements.length < 2) {
+				return;
+			}
+
+			const step = getSlideStep();
+
+			if (!step) {
+				return;
+			}
+
+			isAnimating = true;
+
+			const onTransitionEnd = (event) => {
+				if (event.target !== trackElement || event.propertyName !== 'transform') {
+					return;
+				}
+
+				trackElement.removeEventListener('transitionend', onTransitionEnd);
+
+				const firstSlide = slideElements.shift();
+				slideElements.push(firstSlide);
+				trackElement.appendChild(firstSlide);
+				resetTrackPosition();
+				isAnimating = false;
+			};
+
+			trackElement.addEventListener('transitionend', onTransitionEnd);
+			trackElement.style.transform = `translateX(-${step}px)`;
+		};
+
+		const stopAutoplay = () => {
+			if (!autoplayIntervalId) {
+				return;
+			}
+
+			window.clearInterval(autoplayIntervalId);
+			autoplayIntervalId = null;
+		};
+
+		const startAutoplay = () => {
+			stopAutoplay();
+
+			if (slideElements.length < 2) {
+				return;
+			}
+
+			autoplayIntervalId = window.setInterval(() => {
+				goToNext();
+			}, autoplayDelay);
+		};
+
+		const restartAutoplay = () => {
+			startAutoplay();
 		};
 
 		previousButton.addEventListener('click', goToPrevious);
 
 		nextButton.addEventListener('click', goToNext);
+
+		previousButton.addEventListener('click', restartAutoplay);
+		nextButton.addEventListener('click', restartAutoplay);
 
 		carouselElement.setAttribute('tabindex', '0');
 		carouselElement.addEventListener('keydown', (event) => {
@@ -317,6 +401,7 @@
 		});
 
 		carouselElement.addEventListener('touchstart', (event) => {
+			stopAutoplay();
 			touchStartX = event.changedTouches[0].screenX;
 			touchStartY = event.changedTouches[0].screenY;
 			touchEndX = touchStartX;
@@ -349,6 +434,19 @@
 			} else {
 				goToNext();
 			}
+
+			restartAutoplay();
+		});
+
+		carouselElement.addEventListener('mouseenter', stopAutoplay);
+		carouselElement.addEventListener('mouseleave', startAutoplay);
+		carouselElement.addEventListener('focusin', stopAutoplay);
+		carouselElement.addEventListener('focusout', (event) => {
+			if (carouselElement.contains(event.relatedTarget)) {
+				return;
+			}
+
+			startAutoplay();
 		});
 
 		carouselElement.addEventListener(
@@ -364,8 +462,14 @@
 			true
 		);
 
-		window.addEventListener('resize', updateCarousel);
-		updateCarousel();
+		window.addEventListener('resize', () => {
+			resetTrackPosition();
+			restartAutoplay();
+		});
+
+		setTrackTransition(true);
+		trackElement.style.transform = 'translateX(0px)';
+		startAutoplay();
 	};
 
 	const initFaqAccordions = () => {
