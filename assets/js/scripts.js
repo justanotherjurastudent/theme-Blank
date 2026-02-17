@@ -262,6 +262,10 @@
 		const swipeThreshold = 40;
 
 		const getCardsVisible = () => {
+			if (window.innerWidth >= 1500) {
+				return 4;
+			}
+
 			if (window.innerWidth >= 1100) {
 				return 3;
 			}

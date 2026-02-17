@@ -2,7 +2,7 @@
 {{> head}}
 {{> navbar}}
 <main class="home-layout">
-    <section class="home-credo" {{#if @website.coverImage}}style="background-image:url('{{@website.coverImage}}');"{{/if}}>
+    <section class="home-credo"{{#if @website.coverImage}} style="background-image:url('{{@website.coverImage}}');"{{else}}{{#each posts}}{{#if @first}}{{#featuredImage}}{{#if url}} style="background-image:url('{{url}}');"{{/if}}{{/featuredImage}}{{/if}}{{/each}}{{/if}}>
         <div class="home-credo__overlay">
             <h1 class="home-credo__title">{{@website.name}}</h1>
             {{#if @website.description}}
@@ -23,7 +23,7 @@
         <div class="home-carousel__viewport">
             <div class="home-carousel__track" data-carousel-track>
                 {{#each posts}}
-                    {{#checkIf @index '<' @config.custom.homeCarouselPosts}}
+                    {{#checkIf @index '<=' @config.custom.homeCarouselPosts}}
                         <article class="home-carousel__slide" data-carousel-slide>
                             <div class="post-card card">
                                 {{#featuredImage}}
